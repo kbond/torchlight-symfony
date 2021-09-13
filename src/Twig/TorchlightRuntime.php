@@ -24,7 +24,7 @@ final class TorchlightRuntime
     {
         if (isset($context['app']) && $context['app']->getRequest()) {
             // add to pending collection for render in response event
-            $this->pending->add($block = new Block($code, $language, $theme));
+            $this->pending->add($block = new Block(self::removeIndentation($code), $language, $theme));
 
             return $block;
         }
@@ -34,6 +34,16 @@ final class TorchlightRuntime
 
     public function renderInline(string $code, ?string $language = null, ?string $theme = null): string
     {
-        return $this->renderer->render($code, $language, $theme);
+        return $this->renderer->render(self::removeIndentation($code), $language, $theme);
+    }
+
+    private static function removeIndentation(string $content): string
+    {
+        // remove indentation
+        if ($white = substr($content, 0, strspn($content, " \t\r\n\0\x0B"))) {
+            $content = preg_replace("{^$white}m", '', $content);
+        }
+
+        return $content;
     }
 }
