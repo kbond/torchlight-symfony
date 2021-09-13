@@ -142,9 +142,11 @@ torchlight:
 
 ## Standalone Usage
 
+### Renderer
+
+To begin, you need to create the Torchlight renderer:
+
 ```php
-use Torchlight\Symfony\Block;
-use Torchlight\Symfony\BlockCollection;
 use Torchlight\Symfony\Renderer as Torchlight;
 
 // auto-detect http client to use based on your current dependencies (symfony/http-client only right now but guzzle to come?)
@@ -153,21 +155,66 @@ $torchlight = Torchlight::create('your-api-key');
 // customize default options
 $torchlight = Torchlight::create('your-api-key', ['theme' => 'github-dark', 'lineNumbers' => false]);
 
-// simple render
-$block = $torchlight->render('some php code', 'php'); // see \Torchlight\Symfony\Block for all methods
+// specify a client
+$torchlight = Torchlight::create(
+    'your-api-key',
+    ['theme' => 'github-dark'],
+    $client // instance of \Torchlight\Symfony\Client
+ );
+````
+
+### Render Code Block
+
+```php
+use Torchlight\Symfony\Block;
+use Torchlight\Symfony\BlockCollection;
+use Torchlight\Symfony\Renderer as Torchlight;
+
+/** @var Torchlight $torchlight */
+
+$block = $torchlight->render('some php code', 'php'); // Block object
+
 $block->highlighted(); // highlighted code not wrapped in code/pre tags
 $block->wrapped(); // highlighted code wrapped in code/pre tags
 (string) $block; // equivalent to above
+```
 
-// deferred render
-$collection = new BlockCollection();
-$collection->add(new Block('some php code', 'php'));
-$collection->add(new Block('some more php code', 'php'));
+### Deferred Rendering
 
-// just one API call
-$rendered = $torchlight->renderBlocks($collection); // BlockCollection with all blocks rendered
+To improve performance when rendering multiple blocks, you can collect them in a `BlockCollection` and render
+them all at once (with just a single API call):
 
-foreach ($rendered as $block) {
+```php
+use Torchlight\Symfony\Block;
+use Torchlight\Symfony\BlockCollection;
+use Torchlight\Symfony\Renderer as Torchlight;
+
+$block = new Block('some php code', 'php');
+
+$block->id(); // unique hash of the block as an html tag (ie "<torchlight:3jhd789y89sdfjkshf78/>")
+(string) $block; // equivalent to above
+$block->highlighted(); // !! Exception, block not yet rendered
+
+$anotherBlock = new Block('some more php code', 'php');
+
+$blocks = new BlockCollection($block, $anotherBlock);
+
+/** @var Torchlight $torchlight */
+$torchlight->renderBlocks($blocks); // BlockCollection with all blocks rendered
+
+foreach ($blocks as $block) {
+    $block->highlighted(); // highlighted code not wrapped in code/pre tags
     $block->wrapped(); // highlighted code wrapped in code/pre tags
+    (string) $block; // equivalent to above
 }
+```
+
+The unique block hashes shown above can be used as placeholders in your html. After rendering the set of blocks,
+you can easily _replace_ these placeholders with the rendered blocks:
+
+```php
+use Torchlight\Symfony\BlockCollection
+
+/** @var BlockCollection $rendered */
+$rendered->replacePendingBlocks($htmlContentWithPendingBlocks);
 ```
