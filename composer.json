@@ -1,0 +1,30 @@
+{
+    "name": "torchlight/torchlight-symfony",
+    "description": "A Symfony Bundle for Torchlight, the syntax highlighting API.",
+    "homepage": "https://github.com/torchlight-api/torchlight-symfony",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "keywords": ["syntax highlighting", "code highlighting"],
+    "authors": [
+        {
+            "name": "Kevin Bond",
+            "email": "kevinbond@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.4"
+    },
+    "require-dev": {
+        "symfony/phpunit-bridge": "^5.3"
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": { "Torchlight\\Symfony\\": "src/" }
+    },
+    "autoload-dev": {
+        "psr-4": { "Torchlight\\Symfony\\Tests\\": "tests/" }
+    }
+}
