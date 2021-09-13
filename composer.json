@@ -9,6 +9,10 @@
         {
             "name": "Kevin Bond",
             "email": "kevinbond@gmail.com"
+        },
+        {
+            "name": "Aaron Francis",
+            "email": "aaron@hammerstone.dev"
         }
     ],
     "require": {

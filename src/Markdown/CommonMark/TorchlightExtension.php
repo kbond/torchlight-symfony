@@ -6,6 +6,7 @@ use League\CommonMark\Environment\EnvironmentBuilderInterface;
 
 if (\interface_exists(EnvironmentBuilderInterface::class)) {
     /**
+     * @author Aaron Francis <aaron@hammerstone.dev>
      * @author Kevin Bond <kevinbond@gmail.com>
      */
     final class TorchlightExtension extends V2TorchlightExtension
@@ -13,6 +14,7 @@ if (\interface_exists(EnvironmentBuilderInterface::class)) {
     }
 } else {
     /**
+     * @author Aaron Francis <aarondfrancis@gmail.com>
      * @author Kevin Bond <kevinbond@gmail.com>
      */
     final class TorchlightExtension extends V1TorchlightExtension

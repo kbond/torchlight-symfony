@@ -16,6 +16,7 @@ use Torchlight\Symfony\BlockCollection;
 use Torchlight\Symfony\Renderer;
 
 /**
+ * @author Aaron Francis <aaron@hammerstone.dev>
  * @author Kevin Bond <kevinbond@gmail.com>
  *
  * @internal

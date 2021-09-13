@@ -14,6 +14,7 @@ use Torchlight\Symfony\Block;
 use Torchlight\Symfony\BlockCollection;
 
 /**
+ * @author Aaron Francis <aaron@hammerstone.dev>
  * @author Kevin Bond <kevinbond@gmail.com>
  *
  * @internal
